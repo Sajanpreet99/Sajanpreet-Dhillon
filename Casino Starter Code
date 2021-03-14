@@ -1,0 +1,94 @@
+import java.util.Scanner;
+import java.util.Random;
+
+
+public class MainApplication {
+  public static void main(String[] args) {
+    Casino c = new Casino();
+    c.organizeGame();
+  }
+}
+
+class Casino {
+  // in programming land: We refer to Stories as Requirements
+  // R001: A player walks into a casino and wants to play a game
+  // we need to create a player and a game
+  Player p1 = new Player();
+  Game g = new Game();
+
+  // we must design the algorithm for how the player interacts with the GAME:
+  String userAnswer;
+  Scanner sc = new Scanner(System.in);
+
+  public void organizeGame() {
+    System.out.println("Welcome to our Casino: Would you like to play a game? (y/n)");
+    userAnswer = sc.nextLine();
+
+    if (userAnswer.equals("y")) {
+      System.out.println("let's get started");
+      g.playGame(p1);
+    } else {
+      System.out.println("Good bye!");
+    }
+  }
+}
+
+class Game {
+
+  final int GUESS_DIFFERENCE = 10;
+  Random rand = new Random();
+  private int computerGuess = -1;
+
+  public void playGame(Player player) {
+    // game instructions
+    System.out.println("Guess a number from 1 to 100");
+    System.out.println("And I will guess a game");
+    System.out.println("If your guess is within 20 of my guess then you win, Else I will win!");
+
+    // computer's guess
+    computerGuess = ComputerGuess();
+    System.out.println("Computer guess is " + computerGuess);
+
+    // player's guess
+    int playerGuess = player.guessNumber();
+
+    // determine winner
+    boolean hasPlayerWon = hasPlayerWon(playerGuess);
+    if (hasPlayerWon) {
+      System.out.println("Congratulations! You won the game");
+    } else {
+      System.out.println("Better luck next time");
+    }
+    // print computer and player's guess
+    System.out.println("Computer guess: " + computerGuess);
+    System.out.println("Player guess: " + playerGuess);
+  }
+
+  // get a random number in range [1-100]
+  public int ComputerGuess() {
+    // implement the algorithm to generate the computer's guess:
+    // use a Random Number Generator
+    int programGuess = rand.nextInt(100) + 1;
+    return programGuess;
+  }
+
+  // find if player has won
+  public boolean hasPlayerWon(int playerGuess) {
+    return Math.abs(playerGuess - computerGuess) <= GUESS_DIFFERENCE;
+  }
+}
+
+class Player {
+
+  Scanner sc = new Scanner(System.in);
+  // collect user's input
+  // compare it the computer's guess
+  // you have to come up with the winning algorithm
+  private int userGuess;
+
+  public int guessNumber() {
+    System.out.println("Please enter your guess:[1-100] ");
+    userGuess = sc.nextInt();
+    return userGuess;
+  }
+}
